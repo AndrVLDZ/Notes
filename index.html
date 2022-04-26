@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <link rel="stylesheet" href="css/style.css">
+        <title>PyInstall</title>
+        <meta http-equiv="Content-type" content="text/html"; charset="UTF-8"/>
+    </head>
+
+    <body>
+        <h1> Правильная установка Python на Windows</h1>
+        <h2>Введение</h2>
+        <p>Для установки всех необходимых инструментов и Python используется пакетный менеджер Chocolatey, при помощи которого устанавливаются:  </p>
+        <ul>
+            <li><a target="_blank" href="https://github.com/pyenv/pyenv">pyenv</a> - менеджер версий для python</li>
+            <li><a target="_blank" href="https://python-poetry.org/">poetry</a> - инструмент для управления зависимостями внутри проекта</li>
+        </ul>
+        <h2>Установка Choco</h2>
+        <p>Ставим пакетный менеджер choсo по инструкции с <a target="_blank" href="https://chocolatey.org/install">официального сайта</a>, для установки в PowerShell под администратором необходимо выполнить следующую команду:</p>
+        <pre><code>
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        </code></pre>
+        <h2>Установка Pyenv</h2>
+        <p>Ставим pyenv по <a target="_blank" href="https://pyenv-win.github.io/pyenv-win/#installation">официальной инструкции</a> и проверяем версию после установки</p>
+        <pre><code>
+    choco install pyenv-win
+    pyenv --version
+        </code></pre>
+        <p>Если возникли проблемы - переводим политики запуска скриптов в PowerShell в байпас для обхода ограничений безопасности</p>
+        <pre><code>
+    Set-ExecutionPolicy -ExecutionPolicy Bypass
+        </code></pre>
+        <p>И проверяем все ли переменные среды в PATH на месте </p>
+        <img class="center" src="img/pyenv_install.png" alt="Проверка переменных среды в PATH">
+        <p>После успешной установки необходимо выполнить rehash </p>
+        <pre><code>
+    pyenv rehash
+        </code></pre>
+        <p>Выводим список доступных версий и ставим необходимую</p>
+        <pre><code>
+    pyenv install -l
+    pyenv install 3.9.6
+        </code></pre>
+        <p>Командой global выбрать версию питона по умолчанию</p>
+        <pre><code>
+    pyenv global 3.9.6
+        </code></pre>
+        <p>Заходим через поиск в пуске в управление псевдонимами(alias) и выключаем 2 установщика python  </p>
+        <img class="center" src="img/py_win_install.png" alt="alias">
+        <p>Обновление выполняется при помощи choco</p>
+        <pre><code>
+    choco upgrade Pyenv-win
+        </code></pre>
+        <h2>Установка Poetry</h2>
+        <p>Как и с Pyenv инструкция есть на [официальном сайте](https://python-poetry.org/docs/), необходимо под администратором в PowerShell запустить следующую команду</p>
+        <pre><code>
+    (Invoke-WebRequest -Uri https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py -UseBasicParsing).Content | python -
+        </code></pre>
+        <p>Проверяем версию</p>
+        <pre><code>
+    poetry --version
+        </code></pre>
+        <p>Если не работает - добавляем вручную в PATH</p>
+        <pre><code>
+    %USERPROFILE%\.poetry\bin
+        </code></pre>
+        <p>Обновление выполняется вызовом встроенной команды </p>
+        <pre><code>
+    poetry self update
+        </code></pre>
+        <p>Порядок использования</p>
+        <pre><code>
+    poetry init
+    poetry install
+    poetry run python .\main.py
+        </code></pre>
+        <p>Добавление библиотеки mypy в основные и в dev-dependencies:</p>
+        <pre><code>
+    poetry add mypy
+    poetry add mypy -D
+        </code></pre>
+        <p>Удаление зависимости в в dev-dependencies и в основных происходит по тому же принципу</p>
+        <pre><code>
+    poetry remove mypy -D 
+    poetry remove mypy
+        </code></pre>
+    </body>
+</html>
